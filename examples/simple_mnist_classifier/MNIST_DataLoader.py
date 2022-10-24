@@ -27,9 +27,10 @@ resources = [
 ]
 
 
-def get_MNIST_dataset(root):
-    download_dataset(download_url, resources, root)
-    extract_dataset(root, resources)
+def get_MNIST_dataset(root, download=False):
+    if download:
+        download_dataset(download_url, resources, root)
+        extract_dataset(root, resources)
     train_data, train_labels = load_data(True, root)
     test_data, test_labels = load_data(False, root)
     return train_data, train_labels, test_data, test_labels
@@ -58,6 +59,7 @@ def get_int(b: bytes) -> int:
 
 
 def read_sn3_pascalvincent_ndarray(path: str):
+    assert os.path.exists(path)
     with open(path, "rb") as f:
         data = f.read()
     magic = get_int(data[0:4])
